@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -203,7 +204,8 @@ const QuizScreen = ({ onComplete, mode = 'lightning' }) => {
         S: Math.round((counts.S / (counts.S + counts.N)) * 100),
         T: Math.round((counts.T / (counts.T + counts.F)) * 100),
         J: Math.round((counts.J / (counts.J + counts.P)) * 100)
-      }
+      },
+      mode
     };
   };
 
