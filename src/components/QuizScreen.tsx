@@ -238,10 +238,10 @@ const QuizScreen = ({ onComplete, mode = 'lightning' }) => {
             <Button
               onClick={handlePrevious}
               variant="outline"
+              size="icon"
               className="bg-galactic/30 border-mint/50 text-quartz hover:bg-mint/20 transition-all duration-300"
             >
-              <CircleArrowLeft className="w-4 h-4 mr-2" />
-              Previous
+              <CircleArrowLeft className="w-4 h-4" />
             </Button>
           </div>
         )}
