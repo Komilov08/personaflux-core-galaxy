@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -155,6 +154,106 @@ const deepDiveQuestions = [
   }
 ];
 
+// MBTI type data with professions, celebrities, and fictional characters
+const mbtiData = {
+  "ISTJ": {
+    title: "The Inspector",
+    careers: ["Accountant", "Auditor", "Financial Analyst", "Military Officer", "Judge", "Dentist"],
+    celebrities: ["Queen Elizabeth II", "Warren Buffett", "Natalie Portman"],
+    characters: ["Hermione Granger (Harry Potter)", "Darth Vader (Star Wars)", "Agent Smith (The Matrix)"]
+  },
+  "ISFJ": {
+    title: "The Protector",
+    careers: ["Nurse", "Elementary Teacher", "Social Worker", "Counselor", "Interior Designer", "Librarian"],
+    celebrities: ["Kate Middleton", "Beyoncé", "Mother Teresa"],
+    characters: ["Captain America (Marvel)", "Dr. Watson (Sherlock Holmes)", "Samwise Gamgee (Lord of the Rings)"]
+  },
+  "INFJ": {
+    title: "The Counselor",
+    careers: ["Psychologist", "Writer", "Professor", "HR Manager", "Therapist", "Life Coach"],
+    celebrities: ["Martin Luther King Jr.", "Nicole Kidman", "Lady Gaga"],
+    characters: ["Jon Snow (Game of Thrones)", "Luke Skywalker (Star Wars)", "Aragorn (Lord of the Rings)"]
+  },
+  "INTJ": {
+    title: "The Architect",
+    careers: ["Scientist", "Engineer", "Investment Banker", "Software Developer", "Corporate Strategist", "Judge"],
+    celebrities: ["Elon Musk", "Mark Zuckerberg", "Christopher Nolan"],
+    characters: ["Sherlock Holmes", "Hannibal Lecter", "Professor Moriarty"]
+  },
+  "ISTP": {
+    title: "The Craftsperson",
+    careers: ["Mechanic", "Engineer", "Pilot", "Carpenter", "Technical Specialist", "Forensic Scientist"],
+    celebrities: ["Michael Jordan", "Tom Cruise", "Clint Eastwood"],
+    characters: ["James Bond", "Wolverine (X-Men)", "John Wick"]
+  },
+  "ISFP": {
+    title: "The Artist",
+    careers: ["Artist", "Designer", "Musician", "Chef", "Veterinarian", "Fashion Designer"],
+    celebrities: ["Britney Spears", "Michael Jackson", "Bob Dylan"],
+    characters: ["Frodo (Lord of the Rings)", "Katniss Everdeen (Hunger Games)", "The Little Mermaid"]
+  },
+  "INFP": {
+    title: "The Mediator",
+    careers: ["Writer", "Counselor", "Artist", "Graphic Designer", "Psychologist", "Social Worker"],
+    celebrities: ["Johnny Depp", "Audrey Hepburn", "William Shakespeare"],
+    characters: ["Luna Lovegood (Harry Potter)", "Anne of Green Gables", "Amélie Poulain"]
+  },
+  "INTP": {
+    title: "The Logician",
+    careers: ["Scientist", "Programmer", "Software Engineer", "Professor", "Architect", "Mathematician"],
+    celebrities: ["Albert Einstein", "Bill Gates", "Isaac Newton"],
+    characters: ["Neo (The Matrix)", "Bruce Banner/Hulk (Marvel)", "L (Death Note)"]
+  },
+  "ESTP": {
+    title: "The Entrepreneur",
+    careers: ["Entrepreneur", "Sales Representative", "Sports Star", "Firefighter", "Detective", "Stock Broker"],
+    celebrities: ["Donald Trump", "Madonna", "Eddie Murphy"],
+    characters: ["Tony Stark/Iron Man (Marvel)", "Han Solo (Star Wars)", "Goku (Dragon Ball)"]
+  },
+  "ESFP": {
+    title: "The Entertainer",
+    careers: ["Actor", "Entertainer", "Event Planner", "Flight Attendant", "Tour Guide", "Sales Representative"],
+    celebrities: ["Adele", "Jamie Oliver", "Miley Cyrus"],
+    characters: ["Harley Quinn (DC)", "Genie (Aladdin)", "Peter Griffin (Family Guy)"]
+  },
+  "ENFP": {
+    title: "The Champion",
+    careers: ["Journalist", "Actor", "Marketing Manager", "PR Specialist", "Consultant", "Life Coach"],
+    celebrities: ["Robert Downey Jr.", "Ellen DeGeneres", "Robin Williams"],
+    characters: ["Michael Scott (The Office)", "Pinkie Pie (My Little Pony)", "Naruto Uzumaki"]
+  },
+  "ENTP": {
+    title: "The Visionary",
+    careers: ["Entrepreneur", "Lawyer", "Architect", "Creative Director", "Inventor", "Software Developer"],
+    celebrities: ["Steve Jobs", "Leonardo da Vinci", "Jim Carrey"],
+    characters: ["Joker (DC)", "Dr. House", "Rick Sanchez (Rick and Morty)"]
+  },
+  "ESTJ": {
+    title: "The Director",
+    careers: ["Manager", "Police Officer", "Judge", "School Principal", "Military Officer", "Project Manager"],
+    celebrities: ["Dr. Phil", "Sonia Sotomayor", "Frank Sinatra"],
+    characters: ["Dwight Schrute (The Office)", "Stannis Baratheon (Game of Thrones)", "Monica Geller (Friends)"]
+  },
+  "ESFJ": {
+    title: "The Caregiver",
+    careers: ["Teacher", "Social Worker", "Healthcare Worker", "HR Manager", "Event Planner", "Sales Manager"],
+    celebrities: ["Taylor Swift", "Bill Clinton", "Jennifer Garner"],
+    characters: ["Molly Weasley (Harry Potter)", "Catelyn Stark (Game of Thrones)", "Charlotte York (Sex and the City)"]
+  },
+  "ENFJ": {
+    title: "The Giver",
+    careers: ["Teacher", "HR Director", "Life Coach", "Psychologist", "Marketing Director", "Politician"],
+    celebrities: ["Barack Obama", "Oprah Winfrey", "Jennifer Lawrence"],
+    characters: ["Daenerys Targaryen (Game of Thrones)", "Elizabeth Bennet (Pride and Prejudice)", "Professor X (X-Men)"]
+  },
+  "ENTJ": {
+    title: "The Commander",
+    careers: ["CEO", "Lawyer", "Management Consultant", "University Professor", "Entrepreneur", "Political Strategist"],
+    celebrities: ["Margaret Thatcher", "Steve Jobs", "Simon Cowell"],
+    characters: ["Miranda Priestly (Devil Wears Prada)", "Tywin Lannister (Game of Thrones)", "Professor McGonagall (Harry Potter)"]
+  }
+};
+
 const QuizScreen = ({ onComplete, mode = 'lightning' }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
@@ -162,34 +261,42 @@ const QuizScreen = ({ onComplete, mode = 'lightning' }) => {
 
   const questions = mode === 'lightning' ? lightningQuestions : deepDiveQuestions;
   const progress = ((currentQuestion + 1) / questions.length) * 100;
-  const intensityIncrement = 100 / questions.length;
 
+  // Handle selecting an answer
   const handleAnswer = (option) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = option.dimension;
     setAnswers(newAnswers);
-    setAuraIntensity(((currentQuestion + 1) / questions.length) * 100);
+    
+    // Update aura intensity based on how many questions have been answered
+    const answeredQuestions = newAnswers.filter(a => a !== undefined).length;
+    setAuraIntensity((answeredQuestions / questions.length) * 100);
 
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      // Calculate MBTI type
+      // Calculate MBTI type and complete quiz
       const result = calculateMBTI(newAnswers);
       onComplete(result);
     }
   };
 
+  // Handle going back to the previous question
   const handlePrevious = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
+      
       // Update aura intensity based on current progress
-      setAuraIntensity((currentQuestion / questions.length) * 100);
+      const answeredQuestions = answers.filter(a => a !== undefined).length;
+      setAuraIntensity((answeredQuestions / questions.length) * 100);
     }
   };
 
   const calculateMBTI = (answers) => {
     const counts = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
-    answers.forEach(answer => counts[answer]++);
+    answers.forEach(answer => {
+      if (answer) counts[answer]++;
+    });
 
     const type = 
       (counts.E > counts.I ? 'E' : 'I') +
@@ -200,11 +307,12 @@ const QuizScreen = ({ onComplete, mode = 'lightning' }) => {
     return {
       type,
       scores: {
-        E: Math.round((counts.E / (counts.E + counts.I)) * 100),
-        S: Math.round((counts.S / (counts.S + counts.N)) * 100),
-        T: Math.round((counts.T / (counts.T + counts.F)) * 100),
-        J: Math.round((counts.J / (counts.J + counts.P)) * 100)
+        E: Math.round((counts.E / (counts.E + counts.I || 1)) * 100),
+        S: Math.round((counts.S / (counts.S + counts.N || 1)) * 100),
+        T: Math.round((counts.T / (counts.T + counts.F || 1)) * 100),
+        J: Math.round((counts.J / (counts.J + counts.P || 1)) * 100)
       },
+      typeData: mbtiData[type] || null,
       mode
     };
   };
