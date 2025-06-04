@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/501d4330-bbc8-4792-9499-63de0197412d
+**URL**: https://personaflux-core-galaxy.lovable.app/
 
 ## How can I edit this code?
 
